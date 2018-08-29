@@ -10,7 +10,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS users
              (usrid text, pin text)''')
 print("Connecting to table")
 
-image = ImageCaptcha(fonts=['b.ttf'])
+image = ImageCaptcha(fonts=['a.ttf'])
 text =''
 def generate_string(idd):
     random.seed()
@@ -61,6 +61,8 @@ async def on_message(message):
                 msgcnl = '{0.author.mention} has been verified'.format(message)
                 await client.send_message(user, msg)
                 await client.send_message(channell,msgcnl)
+                c.execute("DELETE FROM users WHERE pin ='{pin}'".format(pin=text))
+                conn.commit()
 
 @client.event
 async def on_ready():
